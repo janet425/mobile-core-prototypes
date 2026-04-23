@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GustoTextField Preview</title>
+  <style>
+    @font-face {
+      font-family: "GCentra";
+      src: url("centra-book.otf") format("opentype");
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: "GCentra";
+      src: url("centra-medium.otf") format("opentype");
+      font-weight: 500;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f0f0f0;
+      font-family: "GCentra", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .phone-frame {
+      background: white;
+      border-radius: 44px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2), inset 0 0 0 2px #d1d1d6;
+      width: 390px;
+      min-height: 844px;
+      padding: 60px 20px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-frame::before {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 30px;
+      background: #1c1c1e;
+      border-radius: 20px;
+    }
+
+    .screen {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: #8e8e93;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: -10px;
+    }
+
+    /* ── GustoTextField ── */
+    .gusto-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .input-box {
+      position: relative;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      padding: 17px 15px;
+      transition: border-color 0.15s, background 0.15s;
+      cursor: text;
+      overflow: hidden;
+    }
+
+    .input-box.has-label {
+      padding-top: 9px;
+      padding-bottom: 9px;
+    }
+
+    /* Design-system colors */
+    .input-box.neutral  { background: #FFFFFF; border-color: #BABABA; }
+    .input-box.valid    { background: #F9FDFC; border-color: #0A8080; }
+    .input-box.invalid  { background: #FFFBFB; border-color: #FFA090; }
+    .input-box.disabled { background: #F3F3F3; border-color: transparent; }
+
+    /* Bottom focus bar (2 px when focused) */
+    .input-box::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 0;
+      transition: height 0.15s;
+    }
+    .input-box.focused::after          { height: 2px; }
+    .input-box.neutral.focused::after  { background: #BABABA; }
+    .input-box.valid.focused::after    { background: #0A8080; }
+    .input-box.invalid.focused::after  { background: #FFA090; }
+
+    .float-label {
+      font-family: "GCentra", sans-serif;
+      font-weight: 400;
+      font-size: 11px;  /* footnote: 11pt */
+      color: #6B6B6B;   /* neutral1200 */
+      line-height: 1;
+      margin-bottom: 2px;
+      display: none;
+    }
+
+    .native-input {
+      font-family: "GCentra", sans-serif;
+      font-weight: 400;
+      font-size: 16px;  /* body: 16pt */
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+      color: #111827;
+      line-height: 1.3;
+      padding: 0;
+    }
+
+    .native-input::placeholder { color: #BABABA; }  /* neutral600 */
+    .native-input:disabled {
+      color: #6B6B6B;
+      -webkit-text-fill-color: #6B6B6B;
+    }
+
+    .secure-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .secure-toggle img {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
+    .supplemental-icon img {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+
+    /* Supplemental row */
+    .supplemental {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+      font-family: "GCentra", sans-serif;
+      font-size: 12px;  /* small: 12pt */
+      font-weight: 400;
+      line-height: 1.4;
+      padding-left: 2px;
+    }
+
+    .supplemental.helper  { color: #6B6B6B; }
+    .supplemental.error   { color: #FFA090; }
+    .supplemental.success { color: #0A8080; }
+
+    .supplemental-icon { flex-shrink: 0; margin-top: 1px; }
+  </style>
+</head>
+<body>
+<div class="phone-frame">
+  <div class="screen">
+
+    <div class="section-label">Neutral (empty)</div>
+    <div class="gusto-field">
+      <div class="input-box neutral" id="f1">
+        <span class="float-label" id="l1">Placeholder text</span>
+        <input class="native-input" type="text" placeholder="Placeholder text"
+               oninput="handleInput(this,'f1','l1')"
+               onfocus="setFocus('f1',true)" onblur="setFocus('f1',false)">
+      </div>
+      <div class="supplemental helper">Helper text</div>
+    </div>
+
+    <div class="section-label">Neutral (with text)</div>
+    <div class="gusto-field">
+      <div class="input-box neutral has-label" id="f2">
+        <span class="float-label" id="l2" style="display:block">Placeholder text</span>
+        <input class="native-input" type="text" value="Entered text"
+               oninput="handleInput(this,'f2','l2')"
+               onfocus="setFocus('f2',true)" onblur="setFocus('f2',false)">
+      </div>
+      <div class="supplemental helper">Helper text</div>
+    </div>
+
+    <div class="section-label">Valid</div>
+    <div class="gusto-field">
+      <div class="input-box valid has-label" id="f3">
+        <span class="float-label" id="l3" style="display:block">Placeholder text</span>
+        <input class="native-input" type="text" value=""
+               oninput="handleInput(this,'f3','l3')"
+               onfocus="setFocus('f3',true)" onblur="setFocus('f3',false)">
+      </div>
+      <div class="supplemental success">
+        <span class="supplemental-icon"><img src="icon_alert_success.png" alt="success"></span>
+        This is validation message text
+      </div>
+    </div>
+
+    <div class="section-label">Invalid</div>
+    <div class="gusto-field">
+      <div class="input-box invalid" id="f4">
+        <span class="float-label" id="l4">Placeholder text</span>
+        <input class="native-input" type="text" placeholder="Placeholder text"
+               oninput="handleInput(this,'f4','l4')"
+               onfocus="setFocus('f4',true)" onblur="setFocus('f4',false)">
+      </div>
+      <div class="supplemental error">
+        <span class="supplemental-icon"><img src="icon_alert_error.png" alt="error"></span>
+        This is validation message text
+      </div>
+    </div>
+
+    <div class="section-label">Disabled</div>
+    <div class="gusto-field">
+      <div class="input-box disabled has-label">
+        <span class="float-label" style="display:block">Placeholder text</span>
+        <input class="native-input" type="text" value="Entered text" disabled>
+      </div>
+      <div class="supplemental helper">Helper text</div>
+    </div>
+
+    <div class="section-label">Secure (password)</div>
+    <div class="gusto-field">
+      <div class="input-box neutral has-label" id="f5" style="padding-right: 47px;">
+        <span class="float-label" id="l5" style="display:block">Placeholder text</span>
+        <input class="native-input" id="secure-input" type="password" value="$ecurity"
+               oninput="handleInput(this,'f5','l5')"
+               onfocus="setFocus('f5',true)" onblur="setFocus('f5',false)">
+        <button class="secure-toggle" onclick="toggleSecure()">
+          <img id="eye-icon" src="icon_eye_slash.png" alt="toggle visibility">
+        </button>
+      </div>
+      <div class="supplemental helper">Helper text</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function handleInput(input, fieldId, labelId) {
+    const field = document.getElementById(fieldId);
+    const label = document.getElementById(labelId);
+    if (input.value.length > 0) {
+      field.classList.add('has-label');
+      label.style.display = 'block';
+    } else {
+      field.classList.remove('has-label');
+      label.style.display = 'none';
+    }
+  }
+
+  function setFocus(fieldId, on) {
+    document.getElementById(fieldId).classList.toggle('focused', on);
+  }
+
+  function toggleSecure() {
+    const inp = document.getElementById('secure-input');
+    const icon = document.getElementById('eye-icon');
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    icon.src = inp.type === 'password' ? 'icon_eye_slash.png' : 'icon_eye.png';
+  }
+</script>
+</body>
+</html>
