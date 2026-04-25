@@ -101,64 +101,87 @@
   .profile-row-left { display: flex; align-items: center; gap: 12px; flex: 1; }
   .profile-row-icon { font-size: 20px; width: 28px; text-align: center; }
   .profile-row-label { font-size: 16px; color: #000; }
-  .profile-row-right { display: flex; align-items: center; gap: 8px; }
   .profile-row-chevron { color: #c7c7cc; font-size: 14px; }
   .profile-row.destructive .profile-row-label { color: #ff3b30; }
 
-  /* ── Gus Chat ── */
-  .chat-scroll { flex: 1; overflow-y: auto; padding: 20px 20px 12px; display: flex; flex-direction: column; gap: 14px; }
-  .bubble-row { display: flex; }
-  .bubble-row.user { justify-content: flex-end; }
-  .bubble { max-width: 75%; padding: 12px 16px; border-radius: 18px; font-size: 16px; line-height: 1.4; }
-  .bubble.user-bubble { background: #f2f2f7; border-bottom-right-radius: 4px; }
-  .bubble.agent-bubble { background: transparent; padding: 0; max-width: 100%; }
-  .bubble.agent-bubble .text { font-size: 16px; line-height: 1.5; color: #000; }
-  .tool-indicator { display: flex; align-items: center; gap: 6px; color: #7c3aed; font-size: 14px; }
-  .feedback-row { display: flex; gap: 4px; }
-  .feedback-btn { background: none; border: none; cursor: pointer; font-size: 20px; color: #8e8e93; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 22px; }
-  .feedback-btn:active { background: #f2f2f7; }
-  .user-pill { align-self: flex-end; background: #f2f2f7; padding: 10px 16px; border-radius: 20px; font-size: 16px; }
-  .cta-btn { align-self: flex-start; background: #fff; border: 1.5px solid #c7c7cc; padding: 12px 20px; border-radius: 24px; font-size: 16px; font-weight: 600; cursor: pointer; }
-  .cta-btn:active { opacity: 0.7; }
-  .input-bar { flex-shrink: 0; padding: 10px 16px; background: #fff; border-top: 1px solid #f2f2f7; }
-  .input-row { display: flex; align-items: center; gap: 12px; }
-  .input-plus { width: 40px; height: 40px; background: #f2f2f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #8e8e93; cursor: pointer; border: none; }
-  .input-field { flex: 1; height: 44px; background: #f2f2f7; border-radius: 22px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; color: #8e8e93; font-size: 16px; }
-  .disclaimer { text-align: center; font-size: 11px; color: #8e8e93; margin-top: 6px; padding-bottom: 4px; }
+  /* ── Help Drawer ── */
+  /* Floats over whatever screen is active */
+  .drawer-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none; align-items: flex-end; z-index: 200;
+  }
+  .drawer-overlay.open { display: flex; }
+  .drawer {
+    background: #fff; border-radius: 20px 20px 0 0;
+    width: 100%; padding-bottom: 40px;
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .drawer-overlay.open .drawer { transform: translateY(0); }
+  .drawer-handle { width: 36px; height: 4px; background: #d1d1d6; border-radius: 2px; margin: 12px auto 0; }
+  .drawer-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    padding: 18px 20px 4px;
+  }
+  .drawer-heading { font-size: 22px; font-weight: 700; color: #000; line-height: 1.25; flex: 1; }
+  .drawer-close {
+    width: 30px; height: 30px; background: #e5e5ea; border-radius: 50%;
+    border: none; cursor: pointer; flex-shrink: 0; margin-left: 12px; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: #636366;
+  }
+  .drawer-close:active { background: #d1d1d6; }
+  .drawer-body { padding: 20px 20px 0; display: flex; flex-direction: column; gap: 14px; }
+  .drawer-field-label { font-size: 15px; font-weight: 500; color: #3c3c43; margin-bottom: 8px; }
+  .drawer-input-wrap { position: relative; }
+  .drawer-input {
+    width: 100%; border: 1.5px solid #c7c7cc; border-radius: 12px;
+    padding: 13px 52px 13px 14px;
+    font-size: 16px; font-family: inherit; color: #000;
+    outline: none; background: #fff;
+  }
+  .drawer-input:focus { border-color: #007AFF; }
+  .drawer-char-count {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    font-size: 12px; color: #aeaeb2; pointer-events: none;
+  }
+  .drawer-hint { font-size: 13px; color: #aeaeb2; margin-top: 5px; }
+  .drawer-cta {
+    width: 100%; height: 52px; background: #0d9488; color: #fff;
+    border: none; border-radius: 14px; font-size: 17px; font-weight: 600;
+    font-family: inherit; cursor: pointer;
+  }
+  .drawer-cta:active { background: #0f766e; }
 
-  /* ── Bottom Sheet ── */
-  .sheet-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: flex-end; z-index: 100; }
-  .sheet-overlay.open { display: flex; }
-  .sheet { background: #fff; border-radius: 16px 16px 0 0; width: 100%; padding-bottom: 32px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1); }
-  .sheet-overlay.open .sheet { transform: translateY(0); }
-  .sheet-handle { width: 36px; height: 4px; background: #d1d1d6; border-radius: 2px; margin: 10px auto 0; }
-  .sheet-header { display: flex; align-items: center; justify-content: center; position: relative; padding: 14px 16px 8px; border-bottom: 1px solid #f2f2f7; }
-  .sheet-header .title { font-size: 17px; font-weight: 600; }
-  .sheet-close { position: absolute; right: 8px; background: none; border: none; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
-  .sheet-close-inner { width: 28px; height: 28px; background: #e5e5ea; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #636366; }
-  .sheet-close:active .sheet-close-inner { background: #d1d1d6; }
-  .sheet-body { padding: 12px 16px 0; display: flex; flex-direction: column; gap: 10px; }
-  .option-card { border: 1px solid #e5e5ea; border-radius: 12px; padding: 14px 16px; }
-  .option-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  /* ── Contact Options screen ── */
+  .options-scroll { flex: 1; overflow-y: auto; padding: 20px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+
+  /* Intent echo banner */
+  .intent-banner {
+    background: #f2f2f7; border-radius: 12px; padding: 12px 14px;
+    font-size: 14px; color: #3c3c43; line-height: 1.4; margin-bottom: 4px;
+  }
+  .intent-label { font-size: 11px; font-weight: 600; color: #8e8e93; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+  /* Option cards */
+  .option-card { border: 1px solid #e5e5ea; border-radius: 16px; padding: 16px; cursor: pointer; }
+  .option-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
   .option-icon { font-size: 22px; }
-  .recommended-badge { display: flex; align-items: center; gap: 4px; border: 1.5px solid #16a34a; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 500; color: #16a34a; }
   .priority-badge { display: flex; align-items: center; gap: 4px; background: #fff7ed; border: 1.5px solid #f59e0b; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 600; color: #b45309; }
-  .option-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
-  .status-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .recommended-badge { display: flex; align-items: center; gap: 4px; border: 1.5px solid #16a34a; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 500; color: #16a34a; }
+  .option-title { font-size: 17px; font-weight: 700; color: #000; margin-bottom: 6px; }
+  .status-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
   .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #16a34a; }
-  .status-label { font-size: 14px; }
-  .option-desc { font-size: 14px; color: #6b7280; line-height: 1.4; }
-  .option-hours { font-size: 14px; color: #3c3c43; margin-top: 5px; }
+  .status-label { font-size: 14px; color: #3c3c43; }
+  .option-desc { font-size: 14px; color: #6b7280; line-height: 1.4; margin-bottom: 8px; }
+  .option-hours { font-size: 14px; color: #3c3c43; margin-bottom: 14px; }
   .call-now-btn {
-    display: block; width: 100%; height: 44px;
-    background: #0d9488; color: #fff;
-    border: none; border-radius: 10px;
-    font-size: 15px; font-weight: 600; font-family: inherit;
-    cursor: pointer; margin-top: 12px;
+    width: 100%; height: 48px; background: #0d9488; color: #fff;
+    border: none; border-radius: 12px; font-size: 16px; font-weight: 600;
+    font-family: inherit; cursor: pointer;
   }
   .call-now-btn:active { background: #0f766e; }
-  .sheet-footer { margin: 10px 16px 0; font-size: 12px; color: #6b7280; line-height: 1.5; text-align: center; }
-  .sheet-footer a { color: #007AFF; text-decoration: underline; }
 
   /* ── Phone (token) screen ── */
   .phone-scroll { flex: 1; overflow-y: auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 24px; }
@@ -224,6 +247,7 @@
   </div>
 
   <!-- ══════════ SCREEN: PROFILE ══════════ -->
+  <!-- "Contact us" row opens the help drawer — no Gus chat in this flow -->
   <div class="screen" id="screen-profile">
     <div class="status-bar">
       <span class="time">9:41</span>
@@ -244,9 +268,9 @@
         <div class="profile-row-left"><span class="profile-row-icon">💬</span><span class="profile-row-label">FAQs</span></div>
         <span class="profile-row-chevron">›</span>
       </div>
-      <div class="profile-row" onclick="goGus()">
+      <div class="profile-row" id="contact-us-row">
         <div class="profile-row-left"><span class="profile-row-icon">🤖</span><span class="profile-row-label">Contact us</span></div>
-        <div class="profile-row-right"><span class="profile-row-chevron">›</span></div>
+        <span class="profile-row-chevron">›</span>
       </div>
       <div class="profile-section-header">Device settings</div>
       <div class="profile-row">
@@ -264,37 +288,58 @@
     </div>
   </div>
 
-  <!-- ══════════ SCREEN: GUS ══════════ -->
-  <div class="screen" id="screen-gus">
+  <!-- ══════════ SCREEN: CONTACT OPTIONS ══════════ -->
+  <!-- Reached after "Get help" in the drawer. Full screen, not a sheet. -->
+  <div class="screen" id="screen-options">
     <div class="status-bar">
       <span class="time">9:41</span>
       <span class="icons">▌▌▌ &#8859; ▮</span>
     </div>
     <div class="nav-bar">
-      <button class="back-btn" onclick="goProfile()">‹ Profile</button>
+      <button class="back-btn" onclick="goProfile()">‹</button>
       <span class="title">Contact us</span>
+      <button class="nav-action" onclick="goHome()">✕</button>
     </div>
-    <div class="chat-scroll">
-      <div class="bubble-row user">
-        <div class="bubble user-bubble">Explain the compliance requirements: Display or distribute labor law posters</div>
+    <div class="options-scroll">
+
+      <!-- Echo the user's typed intent back to them -->
+      <div class="intent-banner">
+        <div class="intent-label">Your question</div>
+        "How do I add a new contractor to payroll?"
       </div>
-      <div class="tool-indicator"><span>✓</span><span>Searched help center articles</span></div>
-      <div class="bubble-row agent">
-        <div class="bubble agent-bubble"><span class="text">Of course! I can pull up your most recent payroll and check if any contractors were missed. Want me to do that now?</span></div>
+
+      <!-- Call — priority treatment with inline Call now button -->
+      <div class="option-card">
+        <div class="option-card-top">
+          <span class="option-icon">📞</span>
+          <div class="priority-badge">⚡ Priority</div>
+        </div>
+        <div class="option-title">Give us a call</div>
+        <div class="status-row"><div class="status-dot"></div><span class="status-label">Open now</span></div>
+        <div class="option-desc">As a Priority member, you'll skip the queue and speak to the first available agent.</div>
+        <div class="option-hours"><strong>Hours today:</strong> 5am – 5pm PDT</div>
+        <button class="call-now-btn" id="call-now-btn">Call now</button>
       </div>
-      <div class="feedback-row">
-        <button class="feedback-btn">👍</button>
-        <button class="feedback-btn">👎</button>
+
+      <!-- Chat -->
+      <div class="option-card">
+        <div class="option-card-top">
+          <span class="option-icon">🎧</span>
+          <div class="recommended-badge">✓ Recommended</div>
+        </div>
+        <div class="option-title">Chat with customer care</div>
+        <div class="status-row"><div class="status-dot"></div><span class="status-label">Open now</span></div>
+        <div class="option-desc">Best for when you need help fast</div>
+        <div class="option-hours"><strong>Hours today:</strong> 5am – 5pm PDT</div>
       </div>
-      <div class="user-pill">Talk to a human</div>
-      <button class="cta-btn" id="open-sheet-btn">Contact support</button>
-    </div>
-    <div class="input-bar">
-      <div class="input-row">
-        <button class="input-plus">+</button>
-        <div class="input-field"><span>Ask Gus</span><span>🎙</span></div>
+
+      <!-- Email -->
+      <div class="option-card">
+        <div class="option-card-top"><span class="option-icon">✉️</span></div>
+        <div class="option-title">Send us an email</div>
+        <div class="option-desc">Best for when chat and phone are closed</div>
       </div>
-      <p class="disclaimer">AI can make mistakes. Consider checking important info.</p>
+
     </div>
   </div>
 
@@ -305,7 +350,7 @@
       <span class="icons">▌▌▌ &#8859; ▮</span>
     </div>
     <div class="nav-bar">
-      <button class="back-btn" onclick="goGus()">‹ Contact us</button>
+      <button class="back-btn" onclick="goOptions()">‹ Contact us</button>
       <span class="title">Give us a call</span>
     </div>
     <div class="phone-scroll">
@@ -338,78 +383,76 @@
     </div>
   </div>
 
-  <!-- ══════════ CONTACT SUPPORT SHEET ══════════ -->
-  <div class="sheet-overlay" id="sheet-overlay">
-    <div class="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <span class="title">Contact support</span>
-        <button class="sheet-close" id="sheet-close-btn"><div class="sheet-close-inner">✕</div></button>
+  <!-- ══════════ HELP DRAWER ══════════ -->
+  <!-- Floats over Profile. Steps 1–2 in the spec. -->
+  <div class="drawer-overlay" id="drawer-overlay">
+    <div class="drawer">
+      <div class="drawer-handle"></div>
+      <div class="drawer-header">
+        <div class="drawer-heading">Find help or ways<br>to get in touch</div>
+        <button class="drawer-close" id="drawer-close-btn">✕</button>
       </div>
-      <div class="sheet-body">
-
-        <!-- Chat card -->
-        <div class="option-card">
-          <div class="option-card-top">
-            <span class="option-icon">🎧</span>
-            <div class="recommended-badge">✓ Recommended</div>
+      <div class="drawer-body">
+        <div>
+          <div class="drawer-field-label">How can we help?</div>
+          <div class="drawer-input-wrap">
+            <input
+              class="drawer-input"
+              id="drawer-input"
+              type="text"
+              maxlength="250"
+              placeholder="Describe your question or issue…"
+              oninput="updateCharCount(this)"
+            />
+            <span class="drawer-char-count" id="char-count">250</span>
           </div>
-          <div class="option-title">Chat with customer care</div>
-          <div class="status-row"><div class="status-dot"></div><span class="status-label">Open</span></div>
-          <div class="option-desc">Best for when you need help fast</div>
-          <div class="option-hours"><strong>Hours today:</strong> 5am – 5pm PDT</div>
+          <div class="drawer-hint">250 characters max</div>
         </div>
-
-        <!-- Call card — priority treatment -->
-        <div class="option-card">
-          <div class="option-card-top">
-            <span class="option-icon">📞</span>
-            <div class="priority-badge">⚡ Priority</div>
-          </div>
-          <div class="option-title">Give us a call</div>
-          <div class="status-row"><div class="status-dot"></div><span class="status-label">Open</span></div>
-          <div class="option-desc">With priority support, you'll jump the line and speak to the first person available</div>
-          <div class="option-hours"><strong>Hours today:</strong> 5am – 5pm PDT</div>
-          <button class="call-now-btn" id="call-now-btn">Call now</button>
-        </div>
-
-        <!-- Email card -->
-        <div class="option-card">
-          <div class="option-card-top"><span class="option-icon">✉️</span></div>
-          <div class="option-title">Send us an email</div>
-          <div class="option-desc">Best for when chat and phone are closed</div>
-        </div>
-
+        <button class="drawer-cta" id="get-help-btn">Get help</button>
       </div>
-      <p class="sheet-footer">HR Experts can help with labor laws, policies, compliance, and more. Contact them by <a href="#">visiting the HER Resource hub.</a></p>
     </div>
   </div>
 
 </div><!-- /phone -->
 
 <script>
+  // ── Navigation ──
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
   }
   function goHome()    { showScreen('screen-home'); }
   function goProfile() { showScreen('screen-profile'); }
-  function goGus()     { showScreen('screen-gus'); }
+  function goOptions() { showScreen('screen-options'); }
   function goPhone()   { showScreen('screen-phone'); }
 
   document.getElementById('home-profile-btn').addEventListener('click', goProfile);
 
-  const sheetOverlay = document.getElementById('sheet-overlay');
-  document.getElementById('open-sheet-btn').addEventListener('click', () => sheetOverlay.classList.add('open'));
-  document.getElementById('sheet-close-btn').addEventListener('click', closeSheet);
-  sheetOverlay.addEventListener('click', e => { if (e.target === sheetOverlay) closeSheet(); });
-  function closeSheet() { sheetOverlay.classList.remove('open'); }
+  // ── "Contact us" row → open help drawer ──
+  document.getElementById('contact-us-row').addEventListener('click', openDrawer);
 
-  // "Call now" — close sheet, navigate to phone screen
-  document.getElementById('call-now-btn').addEventListener('click', () => {
-    closeSheet();
-    setTimeout(goPhone, 350);
+  // ── Help drawer ──
+  const drawerOverlay = document.getElementById('drawer-overlay');
+
+  function openDrawer()  { drawerOverlay.classList.add('open'); }
+  function closeDrawer() { drawerOverlay.classList.remove('open'); }
+
+  document.getElementById('drawer-close-btn').addEventListener('click', closeDrawer);
+  drawerOverlay.addEventListener('click', e => { if (e.target === drawerOverlay) closeDrawer(); });
+
+  // "Get help" → close drawer, push to contact options screen
+  document.getElementById('get-help-btn').addEventListener('click', () => {
+    closeDrawer();
+    setTimeout(goOptions, 350);
   });
+
+  // ── Character counter ──
+  function updateCharCount(input) {
+    document.getElementById('char-count').textContent = 250 - input.value.length;
+  }
+
+  // ── "Call now" → phone number + security code screen ──
+  document.getElementById('call-now-btn').addEventListener('click', goPhone);
 </script>
 </body>
 </html>
